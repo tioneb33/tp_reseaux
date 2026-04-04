@@ -1,0 +1,23 @@
+hostname access1
+
+vlan 10
+name admins
+vlan 20
+name clients
+vlan 30
+name servers
+vlan 40
+name guests
+
+interface Ethernet0/0
+switchport trunk encapsulation dot1q
+switchport mode trunk
+
+interface Ethernet0/1
+switchport mode access
+switchport access vlan 20
+spanning-tree portfast
+
+interface Ethernet0/2
+switchport mode access
+switchport access vlan 20
