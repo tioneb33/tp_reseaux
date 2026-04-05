@@ -1,0 +1,39 @@
+enable
+conf t
+hostname access3
+vlan 10
+name admins
+vlan 20
+name clients
+vlan 30
+name servers
+vlan 40
+name guests
+exit
+
+ip dhcp snooping
+ip dhcp snooping vlan 10,20
+ip arp inspection vlan 10,20
+interface Ethernet0/0
+description TRUNK_TO_CORE
+ip dhcp snooping trust
+ip arp inspection trust
+switchport trunk encapsulation dot1q
+switchport mode trunk
+exit
+
+interface Ethernet0/1
+switchport mode access
+switchport access vlan 20
+ip dhcp snooping limit rate 20
+spanning-tree portfast
+exit
+
+interface Ethernet0/2
+switchport mode access
+switchport access vlan 10
+ip dhcp snooping limit rate 20
+spanning-tree portfast
+exit
+
+copy running-config startup-config

@@ -1,0 +1,46 @@
+enable
+conf t
+hostname r1
+interface FastEthernet0/0
+ip address dhcp
+ip nat outside
+no shut
+exit
+
+interface GigabitEthernet1/0
+no shut
+exit
+
+interface GigabitEthernet1/0.10
+encapsulation dot1Q 10
+ip address 10.1.10.254 255.255.255.0
+ip helper-address 10.1.30.1
+ip nat inside
+exit
+
+interface GigabitEthernet1/0.20
+encapsulation dot1Q 20
+ip address 10.1.20.254 255.255.255.0
+ip helper-address 10.1.30.1
+ip nat inside
+exit
+
+interface GigabitEthernet1/0.30
+encapsulation dot1Q 30
+ip address 10.1.30.254 255.255.255.0
+ip nat inside
+exit
+
+interface GigabitEthernet1/0.40
+encapsulation dot1Q 40
+ip address 10.1.40.254 255.255.255.0
+ip helper-address 10.1.30.1
+ip nat inside
+exit
+
+ip route 0.0.0.0 0.0.0.0 FastEthernet0/0
+access-list 1 permit 10.1.0.0 0.0.255.255
+ip nat inside source list 1 interface FastEthernet0/0 overload
+exit
+
+copy running-config startup-config
